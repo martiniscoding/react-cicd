@@ -6,7 +6,7 @@ import LandingPage from './Pages/LandingPage'
 
 function App() {
   return (
-    <div>
+    <div className='overflow-x-hidden'>
       <Routes>
         <Route path='' element={<LandingPage></LandingPage>}></Route>
       </Routes>
