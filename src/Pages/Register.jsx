@@ -62,7 +62,9 @@ function Register() {
             <span className="font-light"> Google </span>
             <FcGoogle className="size-5"></FcGoogle>
           </div>
-          <div className="flex gap-2 justify-center items-center w-full py-1 border rounded-2xl">
+          <div onClick={()=>{
+            navigate("/white")
+          }} className="flex gap-2 justify-center items-center w-full py-1 border rounded-2xl">
             <span className="font-light"> Continue As A Guest </span>
             <FcPortraitMode className="size-5"></FcPortraitMode>
           </div>
