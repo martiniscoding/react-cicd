@@ -13,7 +13,7 @@ jobs:
             - name: print node version
               run: node -v
             - name: install dependencies 
-              run: npm ci 
+              run: npm i 
             - name: build project 
               run: npm run build 
             - name: deploy
