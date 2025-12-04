@@ -6,11 +6,34 @@ import { FaPenNib } from "react-icons/fa";
 
 import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { setIsAuthenticated } from "../redux/UserSlice";
 function Login() {
+  const dispatch = useDispatch()
     const [infoDetails,setInfoDetails]=useState({
         username:"",
         password:""
     })
+    const loginAPI= async()=>{
+      try{
+        const res = await axios.post("http://localhost:3000/api/auth/login", {
+        username:infoDetails.username,
+        password:infoDetails.password
+      },{
+        withCredentials:true
+      })
+      toast.success(res.data.message)
+      dispatch(setIsAuthenticated(true))
+      navigate("/chat")
+      
+      }
+      catch(e){
+        toast.error(e.response.data.message)
+        console.log(`error is comming from login api ${e.message}`)
+      }
+    }
     const handleInputChange = (e)=>{
         setInfoDetails((prev)=>{
             return {
@@ -55,7 +78,7 @@ function Login() {
             <FcGoogle className="size-5"></FcGoogle>
           </div>
           
-          <button className=" w-full py-1 bg-linear-to-r from-pink-200 via-purple-200 to-yellow-200 shadow-xl font-md rounded-4xl">
+          <button onClick={loginAPI} className=" w-full py-1 bg-linear-to-r from-pink-200 via-purple-200 to-yellow-200 shadow-xl font-md rounded-4xl">
             Login 
           </button>
           <div onClick={()=>{

@@ -3,18 +3,39 @@ import { FcLike } from "react-icons/fc";
 import { FcGoogle } from "react-icons/fc";
 import { FcPortraitMode } from "react-icons/fc";
 import { FaPenNib } from "react-icons/fa";
-
+import { Spinner } from "@/components/ui/spinner"
 import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "sonner";
 function Register() {
-    const nam="helio"
-    const [showPassword,setShowPassword]=useState(false)
+  const [loading,SetLoading]=useState(false)
+  const [showPassword,setShowPassword]=useState(false)
     const navigate = useNavigate()
     const [infoDetails,setInfoDetails]= useState({
         username:"",
         email:"",
         password:""
     })
+    const registerApi =async ()=>{
+      try{
+        SetLoading(true)
+        const res = await axios.post("http://localhost:3000/api/auth/register", {
+          username:infoDetails.username,
+          email:infoDetails.email,
+          password:infoDetails.password
+        })
+        SetLoading(false)
+        navigate("/login")
+        toast.success(res.data.message)
+
+      }
+      catch(e){
+        SetLoading(false)
+        toast.error(e?.response?.data.message)
+        console.log(`errror is comming from signup ${e.message}`)
+      }
+    }
     const handleInputChange=(e)=>{
         setInfoDetails((prev)=>{
             return {
@@ -32,7 +53,10 @@ function Register() {
       <div className=" absolute -left-10  -bottom-30 bg-linear-to-bl from-pink-300 via-purple-200 to-yellow-200 shadow-xl size-100rounded-tr-[160px] rounded-br-[160px] "></div>
       <div className=" absolute -left-10  -bottom-30 bg-linear-to-bl from-pink-300 via-purple-200 to-yellow-200 shadow-xl size-100 rounded-tr-[160px] rounded-br-[160px] "></div>
 
-      <div className="w-150 h-120  border-pink-300 border rounded-2xl flex flex-col  p-10  bg-linear-to-r from-pink-100 via-purple-100 to-yellow-100 shadow-2xl ">
+      <div className="w-150 h-120 relative  border-pink-300 border rounded-2xl flex flex-col  p-10  bg-linear-to-r from-pink-100 via-purple-100 to-yellow-100 shadow-2xl ">
+        {
+          loading && <Spinner className="size-8 absolute top-60 right-70"></Spinner>
+        }
         <div className=" flex items-center justify-center gap-5">
           <div className="font-normal text-5xl text-center">Register Now !</div>
           <motion.div
@@ -48,7 +72,7 @@ function Register() {
         <div className=" mt-4 flex flex-col gap-3">
           <div className="flex flex-col gap-2 font-light">
             <span>Username </span>
-            <input placeholder="must be unique" onChange={handleInputChange}  name="username" type="text" className=" text-sm bg-white rounded-3xl px-3  " />
+            <input placeholder="must be unique" onChange={handleInputChange}  name="username" type="text" className=" text-sm bg-white rounded-3xl px-3 py-1  " />
           </div>
           <div className="flex flex-col gap-2 font-light">
             <span>Email</span>
@@ -68,7 +92,7 @@ function Register() {
             <span className="font-light"> Continue As A Guest </span>
             <FcPortraitMode className="size-5"></FcPortraitMode>
           </div>
-          <button className=" w-full py-1 bg-linear-to-r from-pink-200 via-purple-200 to-yellow-200 shadow-xl font-md rounded-4xl">
+          <button onClick={registerApi} className=" w-full py-1 bg-linear-to-r from-pink-200 via-purple-200 to-yellow-200 shadow-xl font-md rounded-4xl">
             Register For Free !
           </button>
           <div onClick={()=>{
