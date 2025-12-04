@@ -1,10 +1,10 @@
 name: Greeting
 on: [push,workflow_dispatch]
 jobs:
-    test:
+    deploy:
         runs-on: ubuntu-latest
         steps:
-            - name: Greet user
+            - name: get code locally
               uses: actions/checkout@v6
             - name: Install nodejs 
               uses: actions/setup-node@v4
@@ -14,3 +14,7 @@ jobs:
               run: node -v
             - name: install dependencies 
               run: npm ci 
+            - name: build project 
+              run: npm run build 
+            - name: deploy
+              run: echo "deployed successfuly"
