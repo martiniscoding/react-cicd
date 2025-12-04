@@ -3,7 +3,7 @@ import { FcLike } from "react-icons/fc";
 import { FcGoogle } from "react-icons/fc";
 import { FcPortraitMode } from "react-icons/fc";
 import { FaPenNib } from "react-icons/fa";
-import { Spinner } from "@/components/ui/spinner.tsx"
+import { Spinner } from "@/Components/ui/spinner.tsx"
 import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
