@@ -4,7 +4,13 @@ jobs:
     test:
         runs-on: ubuntu-latest
         steps:
-            - name: "Greet user"
-              run: |
-                 echo "hello world !"
-                 git clone https://github.com/${{ github.repository }}.git
+            - name: Greet user
+              uses: actions/checkout@v6
+            - name: Install nodejs 
+              uses: actions/setup-node@v4
+              with:
+                 node-version: 20
+            - name: print node version
+              run: node -v
+            - name: install dependencies 
+              run: npm ci 
