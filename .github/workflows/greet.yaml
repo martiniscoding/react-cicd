@@ -1,7 +1,7 @@
 name: Greeting
 on: [push,workflow_dispatch]
 jobs:
-    deploy:
+  dependcy-install:
         runs-on: ubuntu-latest
         steps:
             - name: get code locally
@@ -12,6 +12,30 @@ jobs:
                  node-version: 20
             - name: print node version
               run: node -v
+            - name: install dependencies 
+              run: npm i 
+            - name: cache dependencies
+              uses: actions/cache@v4
+              with:
+                path: '~/.npm'
+                key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+  deploy:
+        needs: dependcy-install
+        runs-on: ubuntu-latest
+        steps:
+            - name: get code locally
+              uses: actions/checkout@v6
+            - name: Install nodejs 
+              uses: actions/setup-node@v4
+              with:
+                 node-version: 20
+            - name: print node version
+              run: node -v
+            - name: cache dependencies 
+              uses: actions/cache@v4
+              with:
+                path: '~/.npm'
+                key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
             - name: install dependencies 
               run: npm i 
             - name: build project 
