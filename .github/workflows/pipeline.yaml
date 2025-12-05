@@ -19,7 +19,7 @@ jobs:
               with:
                 path: '~/.npm'
                 key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-  deploy:
+  build:
         needs: dependcy-install
         runs-on: ubuntu-latest
         steps:
@@ -40,5 +40,19 @@ jobs:
               run: npm i 
             - name: build project 
               run: npm run build 
-            - name: deploy
-              run: echo "deployed successfuly"
+            - name: upload artifact
+              uses: actions/upload-artifact@v4
+              with:
+               name: dist-file
+               path: ./dist
+  deploy:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+         - name: download artifact
+           uses: actions/download-artifact@v4
+           with:
+             name: dist-file
+             path: ./dist
+         - name: deploy
+           run: echo "deployed"
